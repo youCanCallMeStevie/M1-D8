@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<!--
+ASSIGNMENT RULES
+- The solution must be pushed to the repository and be available for the tutors by the end of the day
+- You can ask for tutor's help
+- You can google / use StackOverflow BUT we suggest you to use just the material provided
+- To test the page, just open it with your default browser.
+ASSIGNMENT TOPIC
+You are building a task list site.
+The have a list of tasks and can, at any time, add a new one, delete one or sort the whole bunch of them
+-->
+<!-- EXERCISE 1:
+    Specify the title, the charset (UTF-8) and the viewport of the page.
+    -->
+<html lang="en">
+
+<head>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Flanagan M1-D8</title>
+        <style>
+            /* EXERCISE 2:  
+       Create a CSS class for the task list with a diverse background
+       Create a CSS class for the task list item with a border, a bold text and a bigger font size
+       Style every button of the page to be bigger
+    */
+            /* Include the padding and border in an element's total width and height */
+            * {
+                box-sizing: border-box;
+            }
+
+            /* Remove margins and padding from the list */
+            ul {
+                margin: 0;
+                padding: 0;
+            }
+
+            /* Style the list items */
+            ul li {
+                cursor: pointer;
+                position: relative;
+                padding: 12px 8px 12px 40px;
+                list-style-type: none;
+                background: coral;
+                font-size: 18px;
+                transition: 0.2s;
+
+                /* make the list items unselectable */
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+
+            /* Set all odd list items to a different color (zebra-stripes) */
+            ul li:nth-child(odd) {
+                background: #f9f9f9;
+            }
+
+            /* Darker background-color on hover */
+            ul li:hover {
+                background: #ddd;
+            }
+
+            /* When clicked on, add a background color and strike out text */
+            ul li.checked {
+                background: #888;
+                color: #fff;
+                text-decoration: line-through;
+            }
+
+            /* Add a "checked" mark when clicked on */
+            ul li.checked::before {
+                content: '';
+                position: absolute;
+                border-color: #fff;
+                border-style: solid;
+                border-width: 0 2px 2px 0;
+                top: 10px;
+                left: 16px;
+                transform: rotate(45deg);
+                height: 15px;
+                width: 7px;
+            }
+
+            /* Style the close button */
+            .close {
+                position: absolute;
+                right: 0;
+                top: 0;
+                padding: 12px 16px 12px 16px;
+            }
+
+            .close:hover {
+                background-color: #f44336;
+                color: white;
+            }
+
+            /* Style the header */
+            .header {
+                background-color: #f44336;
+                padding: 30px 40px;
+                color: white;
+                text-align: center;
+            }
+
+            /* Clear floats after the header */
+            .header:after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+
+            /* Style the input */
+            input {
+                margin: 0;
+                border: none;
+                border-radius: 0;
+                width: 75%;
+                padding: 10px;
+                float: left;
+                font-size: 16px;
+            }
+
+            /* Style the "Add" button */
+            .addBtn {
+                padding: 10px;
+                width: 25%;
+                background: #d9d9d9;
+                color: #555;
+                float: left;
+                text-align: center;
+                font-size: 16px;
+                cursor: pointer;
+                transition: 0.3s;
+                border-radius: 0;
+            }
+
+            .addBtn:hover {
+                background-color: #bbb;
+            }
+        </style>
+    </head>
+
+<body>
+
+    <div id="myDIV" class="header">
+        <h2 style="margin:5px">My To Do List</h2>
+        <input type="text" id="myInput" placeholder="Get busy girl...">
+        <span onclick="newElement()" class="addBtn">Add</span>
+        <span onclick="removeLast()" class="addBtn">Remove Last</span>
+    </div>
+
+    <ul id="myUL">
+        <li>Hit the gym</li>
+        <li class="checked">Pay bills</li>
+        <li>Meet George</li>
+        <li>Buy eggs</li>
+        <li>Read a book</li>
+        <li>Organize office</li>
+    </ul>
+
+    <script>
+        // Create a "close" button and append it to each list item
+        var myNodelist = document.getElementsByTagName("LI");
+        var i;
+        for (i = 0; i < myNodelist.length; i++) {
+            var span = document.createElement("SPAN");
+            var txt = document.createTextNode("\u00D7");
+            span.className = "close";
+            span.appendChild(txt);
+            myNodelist[i].appendChild(span);
+        }
+
+        // Click on a close button to hide the current list item
+        var close = document.getElementsByClassName("close");
+        var i;
+        for (i = 0; i < close.length; i++) {
+            close[i].onclick = function () {
+                var div = this.parentElement;
+                div.style.display = "none";
+            }
+        }
+
+        // Add a "checked" symbol when clicking on a list item
+        var list = document.querySelector('ul');
+        list.addEventListener('click', function (ev) {
+            if (ev.target.tagName === 'LI') {
+                ev.target.classList.toggle('checked');
+            }
+        }, false);
+
+        // Create a new list item when clicking on the "Add" button
+       
+
+        /* EXERCISE 5:
+        Add a new task to the list.
+        Suggestion:
+        - Use document.getElementById to get the UL item and the input text
+        - Use the document.createElement to create the new List Item
+        - Append the child to the UL
+        */
+
+        function newElement() {
+            let li = document.createElement("li");
+            let inputValue = document.getElementById("myInput").value;
+            let t = document.createTextNode(inputValue);
+            li.appendChild(t);
+            if (inputValue === '') {
+                alert("You didn't actually write anything, be sure to put a task!!");
+            } else {
+                document.getElementById("myUL").appendChild(li);
+            }
+            document.getElementById("myInput").value = "";
+
+            let span = document.createElement("SPAN");
+            let txt = document.createTextNode("\u00D7");
+            span.className = "close";
+            span.appendChild(txt);
+            li.appendChild(span);
+
+            for (i = 0; i < close.length; i++) {
+                close[i].onclick = function () {
+                    let div = this.parentElement;
+                    div.style.display = "none";
+                }
+            }
+        }
+
+        /* EXERCISE 6:
+        Create a method "removeLast" which removes the last item from the task list
+        */
+        function removeLast() { 
+    let last = document.querySelectorAll.length - 1;
+    last.parentNode.removeChild(last);
+}
+
+        /* EXERCISE 7:
+        Create a method "removeFirst" which removes the first item from the task list
+        */
+
+        /* EXERCISE 8:
+        Create a method "getTasksAsArray" which returns (and print to the console) an array containing the tasks as string
+        */
+
+        /* EXERCISE 9:
+        Create a method "changeTaskBackgroundColor" which takes the color from the color picker with an
+        onchange event listener ad applies it as background to every list item
+        */
+
+        /* EXTRA */
+
+        /* EXERCISE 10:
+        Create a method "bubbleSort()" which sort the task list alphabetically using the bubble sort algorithm
+        
+        Use your spare time to beautify your task list with CSS.
+        Suggestion:
+        - Break the code into many function for semplicity
+        - Reuse the functions previously created
+        */
+    </script>
+</body>
+
+</html>
